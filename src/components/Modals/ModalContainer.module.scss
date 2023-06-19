@@ -1,0 +1,56 @@
+.ModalContainer {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, .6);
+  backdrop-filter: blur(10px);
+
+  &_opened {
+    height: 100%;
+  }
+
+  &_closed {
+    height: 0;
+    display: none;
+  }
+
+  &_modal {
+    width: 720px;
+    background-color: #000;
+    border: 1px solid var(--colors-interface-accent);
+    border-radius: var(--common-border-radius-s);
+
+    &_header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+
+      &_title {
+
+      }
+
+      &_closeBtn {
+        border: none;
+        background: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    &_contentWrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

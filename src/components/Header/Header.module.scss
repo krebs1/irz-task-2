@@ -1,0 +1,47 @@
+.header {
+  &_nav {
+    &_ul {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: center;
+
+      &_liLink {
+        display: flex;
+        align-items: center;
+        font-family: 'Jet Brains Mono', serif;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        cursor: pointer;
+      }
+
+      &_left {
+        display: flex;
+        justify-content: flex-start;
+
+        &_li {
+
+        }
+      }
+
+      &_mid {
+        display: flex;
+        justify-content: center;
+
+        &_li {
+          cursor: pointer;
+        }
+      }
+
+      &_right {
+        display: flex;
+        justify-content: flex-end;
+
+        &_li {
+
+        }
+      }
+    }
+  }
+}

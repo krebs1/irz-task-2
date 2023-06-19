@@ -1,0 +1,41 @@
+.IngredientDetails {
+  width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &_imgWrapper {
+    width: 100%;
+
+    &_img {
+      max-width: 100%;
+      min-width: 100%;
+      height: auto;
+    }
+  }
+
+  &_name {
+
+  }
+
+  &_details {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 20px;
+    color: var(--text-inactive-color);
+
+    &_detail {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &_name {
+        margin-bottom: 8px;
+      }
+
+      &_value {
+
+      }
+    }
+  }
+}

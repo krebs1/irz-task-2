@@ -1,0 +1,37 @@
+.OrderWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &_numberWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &_number {
+
+    }
+
+    &_hint {
+
+    }
+  }
+
+  &_successIcon {
+    width: 60px;
+    height: 50px;
+
+    & svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &_hints {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &_hint {
+
+    }
+  }
+}

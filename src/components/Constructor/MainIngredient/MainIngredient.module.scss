@@ -1,0 +1,15 @@
+.MainIngredient {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 16px;
+  cursor: pointer;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &_dragIcon {
+    cursor: grab;
+  }
+}

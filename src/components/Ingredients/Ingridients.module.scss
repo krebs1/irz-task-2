@@ -1,0 +1,33 @@
+.IngredientsWrapper {
+  max-height: calc(100vh - 116px);
+  display: grid;
+  grid-template-rows: min-content min-content minmax(0,1fr);
+  flex-direction: column;
+  flex-grow: 1;
+
+  &_titleWrapper {
+
+  }
+
+  &_tabs {
+    display: flex;
+    width: 100%;
+  }
+
+  &_ingredientsList {
+    flex-grow: 1;
+    overflow-y: scroll;
+
+    &_ingredientsByType {
+      &_typeName {
+
+      }
+
+      &_list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 24px;
+      }
+    }
+  }
+}
