@@ -19,8 +19,8 @@
     overflow-y: scroll;
 
     &_ingredientsByType {
-      &_typeName {
-
+      &_typeNameActive {
+        color: var(--colors-interface-accent);
       }
 
       &_list {

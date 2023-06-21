@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import Style from "./ModalContainer.module.scss";
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons"
+import {useLocation} from "react-router-dom";
 
 interface IProps {
     title?: string,
@@ -10,10 +11,11 @@ interface IProps {
 }
 
 const ModalContainer: FC<IProps> = ({title, children, isOpened = true, onModalClose}) => {
-    return (
+    const location = useLocation();
+    console.log(location);
 
-        <div
-            className={`${Style.ModalContainer} ${isOpened ? Style.ModalContainer_opened : Style.ModalContainer_closed}`}
+    return (
+        <div className={`${Style.ModalContainer} ${isOpened ? Style.ModalContainer_opened : Style.ModalContainer_closed}`}
             onClick={(e) => {
                 e.stopPropagation();
                 onModalClose();

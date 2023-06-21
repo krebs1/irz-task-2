@@ -1,10 +1,9 @@
-import WorksPage from "../pages/WorksPage/WorksPage";
-import DesignersPage from "../pages/DesignersPage/DesignersPage";
-import MainLayout from "../layouts/MainLayout";
-import ManagementPage from "../pages/ManagementPage/ManagementPage";
-import WorkPage from "../pages/WorkPage/WorkPage";
-import WithoutSearchLayout from "../layouts/WithoutSearchLayout";
-import NotesPage from "../pages/NotesPage/NotesPage";
+import ConstructPage from "../pages/ConstructPage/ConstructPage";
+import MainLayout from "../layouts/MainLayout/MainLayout";
+import LoginPage from "../pages/LoginPage/LoginPage";
+import RegisterPage from "../pages/RegisterPage/RegisterPage";
+import ForgotPasswordPage from "../pages/ForgotPasswordPage/ForgotPasswordPage";
+import ResetPasswordPage from "../pages/ResetPasswordPage/ResetPasswordPage";
 
 export const routes = [
     {
@@ -12,33 +11,24 @@ export const routes = [
         routes: [
             {
                 path: '/',
-                element: <WorksPage/>
+                element: <ConstructPage/>
             },
             {
-                path: '/works',
-                element: <WorksPage/>
+                path: '/login',
+                element: <LoginPage/>
             },
             {
-                path: '/designers',
-                element: <DesignersPage/>
+                path: '/register',
+                element: <RegisterPage/>
             },
             {
-                path: '/management',
-                element: <ManagementPage/>
+                path: '/forgot-password',
+                element: <ForgotPasswordPage/>
             },
             {
-                path: '/notes',
-                element: <NotesPage/>
+                path: '/reset-password',
+                element: <ResetPasswordPage/>
             },
         ]
     },
-    {
-        layout: <WithoutSearchLayout/>,
-        routes: [
-            {
-                path: '/works/:id',
-                element: <WorkPage/>
-            },
-        ]
-    }
 ]

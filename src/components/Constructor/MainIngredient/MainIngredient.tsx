@@ -1,14 +1,15 @@
 import {IIngredient} from "../../../models/IIngredient";
-import React, {FC, useRef, useState} from "react";
+import React, {FC, useEffect, useRef, useState} from "react";
 import {useAppDispatch} from "../../../hooks/reduxHooks";
 import {constructorSlice} from "../../../store/reducers/ConstructorSlice";
-import {useDrag, useDrop} from "react-dnd";
+import {useDrag, useDrop, DragPreviewImage} from "react-dnd";
 import {XYCoord, Identifier} from "dnd-core";
 import {itemTypes} from "../../../dndItemTypes/itemTypes";
 import {ConstructorElement} from "@ya.praktikum/react-developer-burger-ui-components";
 import {DragIcon} from "@ya.praktikum/react-developer-burger-ui-components/dist/ui/icons"
 import Style from "./MainIngredient.module.scss";
-import IngredientDetails from "../../Modals/IngredientDetailsModal/IngredientDetails";
+import {viewedIngredientSlice} from "../../../store/reducers/ViewedIngredientSlice";
+import {useLocation, useNavigate} from "react-router-dom";
 
 
 interface IProps {
@@ -24,29 +25,25 @@ interface IDragItem {
 const MainIngredient: FC<IProps> = ({data, index, classname = ''}) => {
     const dispatch = useAppDispatch();
     const {moveIngredient, deleteIngredient} = constructorSlice.actions
-
-    const [modalOpened, setModalOpened] = useState<boolean>(false);
+    const {toggleModal, setIngredient} = viewedIngredientSlice.actions;
 
     const ref = useRef<HTMLDivElement>(null);
 
-    const [{isDragging}, drag] = useDrag({
-        type: itemTypes.ingredientMove,
-        item: () => {
-            return {index: index}
-        },
-        collect: (monitor: any) => ({
-            isDragging: monitor.isDragging(),
-        }),
-    })
+    const nav = useNavigate();
+    const location = useLocation();
 
-    const [{handlerId}, drop] = useDrop<IDragItem,
+    const [{handlerId, canDrop}, drop] = useDrop<IDragItem,
         void,
-        { handlerId: Identifier | null }>({
+        { handlerId: Identifier | null, canDrop: any }>({
         accept: itemTypes.ingredientMove,
         collect(monitor) {
             return {
                 handlerId: monitor.getHandlerId(),
+                canDrop: monitor.canDrop(),
             }
+        },
+        canDrop() {
+            return true
         },
         hover(item: IDragItem, monitor) {
             if (!ref.current) return;
@@ -64,22 +61,43 @@ const MainIngredient: FC<IProps> = ({data, index, classname = ''}) => {
             if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
             if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
 
-            dispatch(moveIngredient({dragIndex: dragIndex, hoverIndex: hoverIndex}));
-            item.index = hoverIndex;
+            if (index !== null) {
+                item.index = index;
+                dispatch(moveIngredient({dragIndex: dragIndex, hoverIndex: hoverIndex}));
+            }
         },
         drop(item: IDragItem) {
 
         }
-    }, [])
+    }, [index])
+    const [{isDragging}, drag, dragPreview] = useDrag({
+        type: itemTypes.ingredientMove,
+        item: () => {
+            return {index: index}
+        },
+        collect: (monitor: any) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    })
 
     drop(ref);
 
     return (
         <>
             <div className={`${Style.MainIngredient} ${classname}`}
+                 style={{
+                     opacity: isDragging ? 0.5 : 1,
+                 }}
                  ref={ref}
-                 onClick={()=>setModalOpened(true)}
+                 data-handler-id={handlerId}
+                 onClick={(e) => {
+                     const target = e.target as HTMLElement;
+                     if(target.closest(`.${Style.MainIngredient}`) && !target.closest(".constructor-element__action")){
+                         nav(`ingredients/${data._id}`, {replace: true, state:{background: location}});
+                     }
+                 }}
             >
+                <DragPreviewImage connect={dragPreview} src={data.image}/>
                 <div className={`${Style.MainIngredient_dragIcon}`}
                      ref={drag}
                 >
@@ -90,16 +108,12 @@ const MainIngredient: FC<IProps> = ({data, index, classname = ''}) => {
                     text={data.name}
                     price={data.price}
                     thumbnail={data.image}
-                    handleClose={()=>{
+                    extraClass={`${isDragging ? Style.MainIngredient_dragging : ''} ${canDrop ? Style.MainIngredient_canDrop : ''}`}
+                    handleClose={() => {
                         dispatch(deleteIngredient(index))
                     }}
                 />
-
             </div>
-            <IngredientDetails isOpened={modalOpened}
-                               onModalClose={()=>setModalOpened(false)}
-                               data={data}
-            />
         </>
 
     );

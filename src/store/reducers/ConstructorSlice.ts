@@ -12,6 +12,10 @@ const initialState: IConstructorState = {
     totalPrice: 0,
 }
 
+const generateId = (id: string)=>{
+    return Date.now().toString() + id;
+}
+
 export const constructorSlice = createSlice({
     name: 'constructor',
     initialState,
@@ -28,19 +32,19 @@ export const constructorSlice = createSlice({
         addIngredient: (state, action: PayloadAction<IIngredient>) => {
             if (action.payload.type === "bun") {
                 if (state.ingredients.length === 0) {
-                    state.ingredients.push(action.payload);
-                    state.ingredients.push(action.payload);
+                    state.ingredients.push({...action.payload, key: generateId(action.payload._id)});
+                    state.ingredients.push({...action.payload, key: generateId(action.payload._id)});
                     state.totalPrice += action.payload.price * 2;
                 } else {
                     state.totalPrice -= state.ingredients[0].price * 2;
                     state.totalPrice += action.payload.price * 2;
-                    state.ingredients[0] = action.payload;
-                    state.ingredients[state.ingredients.length - 1] = action.payload;
+                    state.ingredients[0] = {...action.payload, key: generateId(action.payload._id)};
+                    state.ingredients[state.ingredients.length - 1] = {...action.payload, key: generateId(action.payload._id)};
                 }
                 state.availableIngredients = "all";
             } else {
                 state.totalPrice += action.payload.price;
-                state.ingredients.splice(state.ingredients.length - 1, 0, action.payload);
+                state.ingredients.splice(state.ingredients.length - 1, 0, {...action.payload, key: generateId(action.payload._id)});
                 state.availableIngredients = "all";
             }
         },

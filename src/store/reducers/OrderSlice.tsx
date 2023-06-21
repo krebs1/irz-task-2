@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {createOrder} from "./ActionCreator";
+import {createOrder} from "../actions/ActionCreator";
 import {IOrder} from "../../models/IOrder";
 import {IIngredient} from "../../models/IIngredient";
 

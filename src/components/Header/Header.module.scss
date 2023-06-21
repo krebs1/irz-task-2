@@ -1,3 +1,67 @@
+.link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+
+  font-family: 'Jet Brains Mono', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  &__active {
+    color: var(--text-primary-color);
+  }
+
+  &__inactive {
+    color: var(--text-inactive-color);
+  }
+}
+
+.linkActive {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+
+  color: var(--text-primary-color);
+  font-family: 'Jet Brains Mono', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+
+.linkInactive {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-decoration: none;
+
+  color: var(--text-inactive-color);
+  font-family: 'Jet Brains Mono', serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+
 .header {
   &_nav {
     &_ul {
@@ -7,13 +71,7 @@
       align-items: center;
 
       &_liLink {
-        display: flex;
-        align-items: center;
-        font-family: 'Jet Brains Mono', serif;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 24px;
-        cursor: pointer;
+
       }
 
       &_left {

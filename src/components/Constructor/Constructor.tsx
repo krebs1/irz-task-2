@@ -10,8 +10,10 @@ import {constructorSlice} from "../../store/reducers/ConstructorSlice";
 import MainIngredient from "./MainIngredient/MainIngredient";
 import IngredientDetails from "../Modals/IngredientDetailsModal/IngredientDetails";
 import {orderSlice} from "../../store/reducers/OrderSlice";
-import {createOrder} from "../../store/reducers/ActionCreator";
+import {createOrder} from "../../store/actions/ActionCreator";
 import OrderModal from "../Modals/OrderModal/OrderModal";
+import {viewedIngredientSlice} from "../../store/reducers/ViewedIngredientSlice";
+import {useLocation, useNavigate} from "react-router-dom";
 
 interface IDragItem {
     data: IIngredient
@@ -22,14 +24,14 @@ const Constructor = () => {
 
     const {ingredients, availableIngredients, totalPrice} = useAppSelector(state => state.constructorReducer)
     const {addIngredient, clearConstructor} = constructorSlice.actions;
-
     const {orders} = useAppSelector(state => state.orderReducer)
-
-    const [modalOpened, setModalOpened] = useState<boolean>(false);
     const [orderModalOpened, setOrderModalOpened] = useState<boolean>(false);
+    const {isAuthorize} = useAppSelector(state => state.userReducer);
+
+    const nav = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
-        console.log(2)
         if (orders.length !== 0) {
             setOrderModalOpened(true);
         }
@@ -67,13 +69,16 @@ const Constructor = () => {
                 {
                     ingredients.length > 0 &&
                     <div className={Style.Constructor_ingredientsWrapper_ingredients}>
-                        <div className='pl-8 pr-6 pb-3'
+                        <div className='pl-8 pr-6'
                              style={{
                                  cursor: "pointer",
                              }}
                              onClick={(e) => {
                                  e.stopPropagation();
-                                 setModalOpened(true);
+                                 nav(`ingredients/${ingredients[0]._id}`, {
+                                     replace: true,
+                                     state: {background: location}
+                                 });
                              }}
                         >
                             <ConstructorElement
@@ -86,27 +91,31 @@ const Constructor = () => {
                             />
                         </div>
 
-                        <div className={`${Style.Constructor_ingredientsWrapper_ingredients_main} pr-2 custom-scroll`}>
+                        <div
+                            className={`${Style.Constructor_ingredientsWrapper_ingredients_main} pr-2  pt-3 pb-3 custom-scroll`}>
                             {
                                 ingredients.map((elem, index) => {
                                     if (index !== 0 && index !== ingredients.length - 1) {
                                         return (
                                             <MainIngredient data={elem}
                                                             index={index}
-                                                            key={`${elem._id} ${index}`}
+                                                            key={`${elem.key}`}
                                             />
                                         );
                                     }
                                 })
                             }
                         </div>
-                        <div className='pl-8 pr-6 pt-3'
+                        <div className='pl-8 pr-6'
                              style={{
                                  cursor: "pointer",
                              }}
                              onClick={(e) => {
                                  e.stopPropagation();
-                                 setModalOpened(true);
+                                 nav(`ingredients/${ingredients[ingredients.length - 1]._id}`, {
+                                     replace: true,
+                                     state: {background: location}
+                                 });
                              }}
                         >
                             <ConstructorElement
@@ -118,10 +127,6 @@ const Constructor = () => {
                                 extraClass='pl-8'
                             />
                         </div>
-                        <IngredientDetails isOpened={modalOpened}
-                                           onModalClose={() => setModalOpened(false)}
-                                           data={ingredients[0]}
-                        />
                     </div>
                 }
             </div>
@@ -138,9 +143,13 @@ const Constructor = () => {
                         size={"large"}
                         disabled={ingredients.length === 0}
                         onClick={() => {
-                            const ids = ingredients.map((elem) => elem._id);
-                            dispatch(createOrder(ids));
-                            dispatch(clearConstructor());
+                            if (isAuthorize) {
+                                const ids = ingredients.map((elem) => elem._id);
+                                dispatch(createOrder(ids));
+                                dispatch(clearConstructor());
+                            } else {
+                                nav("/login", {replace: true, state: {from: location}});
+                            }
                         }}
                 >
                     Оформить заказ
@@ -149,7 +158,6 @@ const Constructor = () => {
                     orders.length !== 0 &&
                     <OrderModal isOpened={orderModalOpened}
                                 onModalClose={() => {
-                                    console.log(1)
                                     setOrderModalOpened(false)
                                 }}
                                 data={orders[orders.length - 1]}

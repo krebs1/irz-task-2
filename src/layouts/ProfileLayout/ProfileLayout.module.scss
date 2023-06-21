@@ -1,0 +1,47 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 60px;
+
+  &__nav {
+    &__list {
+      &__li {
+        font-family: 'Jet Brains Mono', sans-serif;
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 30px;
+        padding: 17px 0;
+        list-style: none;
+
+        &__linkActive {
+          color: var(--text-primary-color);
+          text-decoration: none;
+        }
+
+        &__linkInactive {
+          color: var(--text-inactive-color);
+          text-decoration: none;
+        }
+
+        &__button {
+          cursor: pointer;
+          color: var(--text-inactive-color);
+          border: none;
+          background: none;
+
+          &:active, &:focus {
+            border: none;
+          }
+        }
+      }
+    }
+
+    &__info {
+      color: var(--text-inactive-color);
+    }
+  }
+
+  &__content {
+
+  }
+}

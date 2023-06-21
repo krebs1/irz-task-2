@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IIngredientsByType, IIngredient} from "../../models/IIngredient";
-import {fetchIngredients} from "./ActionCreator";
+import {fetchIngredients} from "../actions/ActionCreator";
 
 interface IIngredientState {
     ingredients: IIngredient[],

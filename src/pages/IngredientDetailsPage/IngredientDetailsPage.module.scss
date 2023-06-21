@@ -1,0 +1,43 @@
+.wrapper {
+  height: calc(100vh - 116px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &_card {
+    min-width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &_imgWrapper {
+      width: 100%;
+
+      &_img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    &_details {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      column-gap: 20px;
+
+      &_detail {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: var(--text-inactive-color);
+
+        &_title {
+
+        }
+
+        &_value {
+
+        }
+      }
+    }
+  }
+}
