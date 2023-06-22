@@ -10,7 +10,7 @@ import {DragIcon} from "@ya.praktikum/react-developer-burger-ui-components/dist/
 import Style from "./MainIngredient.module.scss";
 import {viewedIngredientSlice} from "../../../store/reducers/ViewedIngredientSlice";
 import {useLocation, useNavigate} from "react-router-dom";
-
+import {TransitionGroup, CSSTransition, Transition} from 'react-transition-group';
 
 interface IProps {
     data: IIngredient,
@@ -79,43 +79,39 @@ const MainIngredient: FC<IProps> = ({data, index, classname = ''}) => {
             isDragging: monitor.isDragging(),
         }),
     })
-
     drop(ref);
 
     return (
-        <>
-            <div className={`${Style.MainIngredient} ${classname}`}
-                 style={{
-                     opacity: isDragging ? 0.5 : 1,
-                 }}
-                 ref={ref}
-                 data-handler-id={handlerId}
-                 onClick={(e) => {
-                     const target = e.target as HTMLElement;
-                     if(target.closest(`.${Style.MainIngredient}`) && !target.closest(".constructor-element__action")){
-                         nav(`ingredients/${data._id}`, {replace: true, state:{background: location}});
-                     }
-                 }}
-            >
-                <DragPreviewImage connect={dragPreview} src={data.image}/>
-                <div className={`${Style.MainIngredient_dragIcon}`}
-                     ref={drag}
-                >
-                    <DragIcon type="primary"/>
-                </div>
-                <div className='pl-2'></div>
-                <ConstructorElement
-                    text={data.name}
-                    price={data.price}
-                    thumbnail={data.image}
-                    extraClass={`${isDragging ? Style.MainIngredient_dragging : ''} ${canDrop ? Style.MainIngredient_canDrop : ''}`}
-                    handleClose={() => {
-                        dispatch(deleteIngredient(index))
-                    }}
-                />
-            </div>
-        </>
-
+                    <div className={`${Style.MainIngredient} ${classname}`}
+                         style={{
+                             opacity: isDragging ? 0.5 : 1,
+                         }}
+                         ref={ref}
+                         data-handler-id={handlerId}
+                         onClick={(e) => {
+                             const target = e.target as HTMLElement;
+                             if (target.closest(`.${Style.MainIngredient}`) && !target.closest(".constructor-element__action")) {
+                                 nav(`ingredients/${data._id}`, {replace: true, state: {background: location}});
+                             }
+                         }}
+                    >
+                        <DragPreviewImage connect={dragPreview} src={data.image}/>
+                        <div className={`${Style.MainIngredient_dragIcon}`}
+                             ref={drag}
+                        >
+                            <DragIcon type="primary"/>
+                        </div>
+                        <div className='pl-2'></div>
+                        <ConstructorElement
+                            text={data.name}
+                            price={data.price}
+                            thumbnail={data.image}
+                            extraClass={`${isDragging ? Style.MainIngredient_dragging : ''} ${canDrop ? Style.MainIngredient_canDrop : ''}`}
+                            handleClose={() => {
+                                dispatch(deleteIngredient(index));
+                            }}
+                        />
+                    </div>
     );
 };
 

@@ -19,3 +19,20 @@ body, #root, .App{
   margin: 0 auto;
 }
 
+.item-enter {
+  transform: translate(-200px);
+  opacity: 0;
+}
+.item-enter-active {
+  transform: translate(0);
+  opacity: 1;
+  transition: opacity 100ms ease-in, transform 100ms ease-in;
+}
+.item-exit {
+  opacity: 1;
+}
+.item-exit-active {
+  transform: translate(200px);
+  opacity: 0;
+  transition: opacity 100ms ease-in, transform 100ms ease-in;
+}

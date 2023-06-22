@@ -14,6 +14,7 @@ import {createOrder} from "../../store/actions/ActionCreator";
 import OrderModal from "../Modals/OrderModal/OrderModal";
 import {viewedIngredientSlice} from "../../store/reducers/ViewedIngredientSlice";
 import {useLocation, useNavigate} from "react-router-dom";
+import {CSSTransition, TransitionGroup} from "react-transition-group";
 
 interface IDragItem {
     data: IIngredient
@@ -24,7 +25,8 @@ const Constructor = () => {
 
     const {ingredients, availableIngredients, totalPrice} = useAppSelector(state => state.constructorReducer)
     const {addIngredient, clearConstructor} = constructorSlice.actions;
-    const {orders} = useAppSelector(state => state.orderReducer)
+    const {lastOrder} = useAppSelector(state => state.orderReducer);
+    const {resetLastOrder} = orderSlice.actions;
     const [orderModalOpened, setOrderModalOpened] = useState<boolean>(false);
     const {isAuthorize} = useAppSelector(state => state.userReducer);
 
@@ -32,10 +34,10 @@ const Constructor = () => {
     const location = useLocation();
 
     useEffect(() => {
-        if (orders.length !== 0) {
+        if (lastOrder) {
             setOrderModalOpened(true);
         }
-    }, [orders])
+    }, [lastOrder])
 
     const [{isOver, canDrop}, drop] = useDrop(
         () => ({
@@ -91,21 +93,29 @@ const Constructor = () => {
                             />
                         </div>
 
+
                         <div
                             className={`${Style.Constructor_ingredientsWrapper_ingredients_main} pr-2  pt-3 pb-3 custom-scroll`}>
-                            {
-                                ingredients.map((elem, index) => {
-                                    if (index !== 0 && index !== ingredients.length - 1) {
-                                        return (
-                                            <MainIngredient data={elem}
-                                                            index={index}
-                                                            key={`${elem.key}`}
-                                            />
-                                        );
-                                    }
-                                })
-                            }
+                            <TransitionGroup component={null}>
+                                {
+                                    ingredients.map((elem, index) => {
+                                        if (index !== 0 && index !== ingredients.length - 1) {
+                                            return (
+                                                <CSSTransition timeout={100}
+                                                               classNames="item"
+                                                               key={elem.key}
+                                                >
+                                                    <MainIngredient data={elem}
+                                                                    index={index}
+                                                    />
+                                                </CSSTransition>
+                                            );
+                                        }
+                                    })
+                                }
+                            </TransitionGroup>
                         </div>
+
                         <div className='pl-8 pr-6'
                              style={{
                                  cursor: "pointer",
@@ -155,12 +165,13 @@ const Constructor = () => {
                     Оформить заказ
                 </Button>
                 {
-                    orders.length !== 0 &&
+                    lastOrder &&
                     <OrderModal isOpened={orderModalOpened}
                                 onModalClose={() => {
-                                    setOrderModalOpened(false)
+                                    setOrderModalOpened(false);
+                                    dispatch(resetLastOrder());
                                 }}
-                                data={orders[orders.length - 1]}
+                                data={lastOrder}
                     />
                 }
             </div>
